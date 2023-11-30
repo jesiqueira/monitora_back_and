@@ -1,2 +1,3 @@
-# monitora_back_and
-Este é o back end do projeto Monitora.
+# Monitora é um projeto para controle de estoque
+Este é parte do back end, onde irei desenvolver toda logica de back-end usando as seguintes tecnologias:
+ - Nodejs
