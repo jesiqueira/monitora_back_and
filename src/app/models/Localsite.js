@@ -23,6 +23,9 @@ class Localsite extends Model {
       }
     )
   }
+  static associate(models) {
+    this.hasMany(models.User)
+  }
 }
 
 export default Localsite

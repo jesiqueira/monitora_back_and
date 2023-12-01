@@ -7,6 +7,7 @@ Este é parte do back end, onde irei desenvolver toda logica de back-end usando 
 - sequelize
 - pg
 - pg-hstore
+- bcryptjs
 
 Como Dev dependência para ajudar no desenvolvimento irei usar as seguintes tecnologias:
 
