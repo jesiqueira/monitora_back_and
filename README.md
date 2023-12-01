@@ -2,11 +2,19 @@
 
 Este é parte do back end, onde irei desenvolver toda logica de back-end usando as seguintes tecnologias:
 
-- Nodejs
-- Express
+- express
+- dotenv
+- sequelize
+- pg
+- pg-hstore
 
 Como Dev dependência para ajudar no desenvolvimento irei usar as seguintes tecnologias:
 
-- Nodemon
-- Sucrase
+- nodemon
+- sucrase
 - eslint
+- prettierrc
+- sequelize-cli
+- sucrase
+
+# Para criar as tabelas vou usar o ORM com sequelize
