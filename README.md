@@ -8,6 +8,8 @@ Este é parte do back end, onde irei desenvolver toda logica de back-end usando 
 - pg
 - pg-hstore
 - bcryptjs
+- date-fns
+- yup
 
 Como Dev dependência para ajudar no desenvolvimento irei usar as seguintes tecnologias:
 
