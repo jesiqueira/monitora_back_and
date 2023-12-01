@@ -1,0 +1,9 @@
+# Autenticação
+
+APP_SECRET=sua_chave
+
+# Database
+
+DB_HOST=Local_onde_esta_o_banco
+DB_USER=user_do_banco_de_dado
+DB_PASSWORD=senha_do_banco_de_dados

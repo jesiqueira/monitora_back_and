@@ -1,4 +1,5 @@
-import 'dotenv/config'
+require('dotenv/config')
+
 
 module.exports = {
   dialect: 'postgres',
@@ -7,8 +8,8 @@ module.exports = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   define: {
-    timestamp: true,
-    underscored: true,
+    timestamp: true, //cria duas colunas:createdAt e updateAt
+    underscored: true, // nomenclatura _ (não camelCase) ex: customersGroup => customers_group
     underscoredAll: true,
   },
 }
