@@ -28,7 +28,7 @@ class User extends Model {
   }
 
   verificarSenha(senha) {
-    return bcrypt.compare(senha, this.senha_virtual)
+    return bcrypt.compare(senha, this.senha)
   }
 
   static associate(models) {
