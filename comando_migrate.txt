@@ -6,3 +6,5 @@ yarn sequelize db:migrate
 
 ---Remover todas as tabelas----
 yarn sequelize db:migrate:undo:all
+
+teste merge entre develop e master
