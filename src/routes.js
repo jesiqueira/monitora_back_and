@@ -9,7 +9,7 @@ routes.get('/site', localSites.index)
 routes.get('/site/:id', localSites.show)
 routes.post('/site', localSites.create)
 routes.put('/site/:id', localSites.update)
-routes.delete('/site/id', localSites.destroy)
+routes.delete('/site/:id', localSites.destroy)
 
 // Users
 routes.get('/users', users.index)

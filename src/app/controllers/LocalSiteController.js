@@ -182,7 +182,6 @@ class LocalSiteController {
       res.status(500).json({ error: 'Erro ao criar LocalSite' })
     }
   }
-
   async update(req, res) {
     const schema = Yup.object().shape({
       nome: Yup.string(),
@@ -229,7 +228,21 @@ class LocalSiteController {
       res.status(500).json({ error: 'Erro ao atualizar LocalSite' })
     }
   }
-  async destroy(req, res) {}
+  async destroy(req, res) {
+    const localSite = await Localsite.findByPk(req.params.id)
+
+    if (localSite === null || !Object.keys(localSite).length) {
+      return res.status(404).json({ error: 'Local Site não localizado' })
+    }
+
+    try {
+      await localSite.destroy()
+      return res.status(200).json()
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Erro ao deletar LocalSite' })
+    }
+  }
 }
 
 export default new LocalSiteController()
