@@ -14,7 +14,7 @@ routes.delete('/site/:id', localSites.destroy)
 // Users
 routes.get('/users', users.index)
 routes.get('/users/:id', users.show)
-routes.post('/users', users.create)
+routes.post('/site/:siteId/users', users.create)
 routes.put('/users/:id', users.update)
 routes.delete('/users/:id', users.destroy)
 

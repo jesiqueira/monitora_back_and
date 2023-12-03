@@ -22,7 +22,7 @@ class User extends Model {
     )
     this.addHook('beforeSave', async (user) => {
       if (user.senha_virtual) {
-        user.senha = await bcrypt.hash(user.senha, 8)
+        user.senha = await bcrypt.hash(user.senha_virtual, 8)
       }
     })
   }
