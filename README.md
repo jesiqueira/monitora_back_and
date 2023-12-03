@@ -21,3 +21,19 @@ Como Dev dependência para ajudar no desenvolvimento irei usar as seguintes tecn
 - sucrase
 
 # Para criar as tabelas vou usar o ORM com sequelize
+
+## Criar uma migration
+
+- yarn sequelize migration:create --name=create-localSites
+
+## Executar a migrate
+
+- yarn sequelize db:migrate
+
+## Remover uma tabelas
+
+- yarn sequelize db:migrate:undo
+
+## Remover todas as tabelas
+
+- yarn sequelize db:migrate:undo:all

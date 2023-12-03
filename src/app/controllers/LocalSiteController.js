@@ -130,7 +130,15 @@ class LocalSiteController {
       return res.status(500).json({ error: 'Internal server error.' })
     }
   }
-  async show(req, res) {}
+  async show(req, res) {
+    const localsite = await Localsite.findByPk(req.params.id)
+
+    if (localsite === null || !Object.keys(localsite).length) {
+      return res.status(404).json({ error: 'Nada foi localizado' })
+    }
+
+    return res.status(200).json(localsite)
+  }
   async create(req, res) {
     const schema = Yup.object().shape({
       nome: Yup.string().required('nome'),
