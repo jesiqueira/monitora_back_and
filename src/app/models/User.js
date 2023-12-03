@@ -8,8 +8,8 @@ class User extends Model {
         login: DataTypes.STRING,
         senha: DataTypes.STRING,
         senha_virtual: DataTypes.VIRTUAL,
-        isAdmin: DataTypes.BOOLEAN,
-        isAtivo: DataTypes.BOOLEAN,
+        is_admin: DataTypes.BOOLEAN,
+        is_ativo: DataTypes.BOOLEAN,
       },
       {
         sequelize,

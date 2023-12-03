@@ -30,10 +30,10 @@ Como Dev dependência para ajudar no desenvolvimento irei usar as seguintes tecn
 
 - yarn sequelize db:migrate
 
-## Remover uma tabelas
+## Desfazer a ultima migrate
 
 - yarn sequelize db:migrate:undo
 
-## Remover todas as tabelas
+## Remover todas as migrate
 
 - yarn sequelize db:migrate:undo:all

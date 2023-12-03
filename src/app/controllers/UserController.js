@@ -5,7 +5,7 @@ import User from '../models/User'
 
 class UserController {
   async index(req, res) {
-    const { login, isAdmin, isAtivo, createdBefore, createdAfter, updatedBefore, updatedAfter, sort } = req.query
+    const { login, is_admin, is_ativo, createdBefore, createdAfter, updatedBefore, updatedAfter, sort } = req.query
 
     const page = req.query.page || 1
     const limit = req.query.limit || 25
@@ -21,20 +21,16 @@ class UserController {
         },
       }
     }
-    if (isAdmin) {
+    if (typeof is_admin === 'boolean') {
       where = {
         ...where,
-        isAdmin: {
-          [Op.iLike]: isAdmin,
-        },
+        is_admin: is_admin,
       }
     }
-    if (isAtivo) {
+    if (typeof is_ativo === 'boolean') {
       where = {
         ...where,
-        isAtivo: {
-          [Op.iLike]: isAtivo,
-        },
+        is_ativo: is_ativo,
       }
     }
     if (createdBefore) {
@@ -83,12 +79,12 @@ class UserController {
         limit,
         offset: limit * page - limit,
       })
-      // console.log({userId: req.userId});
-      if (!data) {
+      if (!Object.keys(data).length) {
         return res.status(404).json({ error: 'Não existe usuários cadastrados!' })
       }
-      return res.json(data)
+      return res.status(200).json(data)
     } catch (err) {
+      console.log("Error: ", err);
       return res.status(500).json({ error: 'Internal server error.' })
     }
   }
