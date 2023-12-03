@@ -146,6 +146,7 @@ class LocalSiteController {
       estado: Yup.string().required('estado'),
       cidade: Yup.string().required('cidade'),
       numero: Yup.number().required('número'),
+      cnpj: Yup.string(),
       bairro: Yup.string().required('bairro'),
       rua: Yup.string().required('rua'),
     })
@@ -181,7 +182,53 @@ class LocalSiteController {
       res.status(500).json({ error: 'Erro ao criar LocalSite' })
     }
   }
-  async update(req, res) {}
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      nome: Yup.string(),
+      cep: Yup.string(),
+      estado: Yup.string(),
+      cidade: Yup.string(),
+      numero: Yup.number(),
+      cnpj: Yup.string(),
+      bairro: Yup.string(),
+      rua: Yup.string(),
+    })
+
+    try {
+      await schema.validate(req.body, { abortEarly: false })
+    } catch (error) {
+      // console.log('Errros aconteceram: ', error.errors)
+      if (Object.entries(error.errors).length === 1) {
+        return res.status(422).json({ Error: error.message })
+      } else if (Object.entries(error.errors).length >= 2) {
+        let campos = []
+        error.inner.forEach((element) => {
+          campos.push(element.path)
+        })
+        return res.status(422).json({
+          Error: campos.reduce((objeto, campo) => {
+            objeto[campo] = campo
+            return objeto
+          }, {}),
+        })
+      }
+    }
+
+    const localSite = await Localsite.findByPk(req.params.id)
+
+    if (localSite === null || !Object.keys(localSite).length) {
+      return res.status(404).json({ error: 'Local Site não localizado' })
+    }
+
+    try {
+      await localSite.update(req.body)
+      return res.status(200).json(localSite)
+    } catch (error) {
+      // console.error(error)
+      res.status(500).json({ error: 'Erro ao atualizar LocalSite' })
+    }
+  }
   async destroy(req, res) {}
 }
 
