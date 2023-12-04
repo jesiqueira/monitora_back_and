@@ -1,8 +1,7 @@
-import { Op } from 'sequelize'
+import { Op, UniqueConstraintError } from 'sequelize'
 import { parseISO } from 'date-fns'
 import * as Yup from 'yup'
 import Localsite from '../models/Localsite'
-import { UniqueConstraintError } from 'sequelize'
 
 class LocalSiteController {
   async index(req, res) {

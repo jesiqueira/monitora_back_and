@@ -1,4 +1,4 @@
-import { Op } from 'sequelize'
+import { Op, UniqueConstraintError } from 'sequelize'
 import { parseISO } from 'date-fns'
 import * as Yup from 'yup'
 import Localsite from '../models/Localsite'
@@ -118,9 +118,6 @@ class UserController {
       senha_virtual: Yup.string().required('Senha é requerida').min(8, 'minimo 8 caracteres'),
     })
 
-    // if (!(await schema.isValid(req.body))) {
-    //   return res.status(400).json({ error: 'Login e Senha é requerido.' })
-    // }
     try {
       await schema.validate(req.body, { abortEarly: false })
     } catch (error) {
@@ -140,15 +137,60 @@ class UserController {
         })
       }
     }
-    const { id, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create({
-      localsite_id: req.params.siteId,
-      ...req.body,
+
+    try {
+      const { id, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create({
+        localsite_id: req.params.siteId,
+        ...req.body,
+      })
+      return res.status(201).json({ id, login, is_admin, is_ativo, createdAt, updatedAt })
+    } catch (error) {
+      if (error instanceof UniqueConstraintError) {
+        return res.status(400).json({ error: 'O login fornecido já existe. Escolha um login diferente.' })
+      }
+      console.error(error)
+      res.status(500).json({ error: 'Erro ao criar Usuário' })
+    }
+  }
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      login: Yup.string().lowercase(),
+      senha_virtual: Yup.string(),
     })
 
-    return res.status(201).json({ id, login, is_admin, is_ativo, createdAt, updatedAt })
+    try {
+      await schema.validate(req.body, { abortEarly: false })
+    } catch (error) {
+      console.log('Errros aconteceram: ', error)
+      if (Object.entries(error.errors).length === 1) {
+        return res.status(422).json({ Error: error.message })
+      } else if (Object.entries(error.errors).length >= 2) {
+        let campos = []
+        error.inner.forEach((element) => {
+          campos.push(element.path)
+        })
+        return res.status(422).json({
+          Error: campos.reduce((objeto, campo) => {
+            objeto[campo] = campo
+            return objeto
+          }, {}),
+        })
+      }
+    }
+
+    const user = await User.findByPk(req.params.id)
+
+    if (user === null || !Object.keys(user).length) {
+      return res.status(404).json({ error: 'Usuário não localizado.' })
+    }
+    try {
+      const { id, login, is_admin, is_ativo } = await user.update(req.body)
+      return res.status(200).json({ id, login, is_admin, is_ativo })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Erro ao atualizar LocalSite' })
+    }
   }
-  async update(req, res) {}
-  async destroy(req, res) {}
 }
 
 export default new UserController()
