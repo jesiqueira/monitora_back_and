@@ -1,3 +1,5 @@
+PORT=3000
+
 # Autenticação
 
 APP_SECRET=sua_chave

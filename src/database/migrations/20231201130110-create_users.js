@@ -13,17 +13,18 @@ module.exports = {
       login: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       senha: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      isAdmin: {
+      is_admin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
-      isAtivo: {
+      is_ativo: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,

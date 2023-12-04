@@ -1,17 +1,17 @@
-import Sequelize, { Model } from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
 
 class Localsite extends Model {
   static init(sequelize) {
     return super.init(
       {
-        nome: Sequelize.STRING,
-        cep: Sequelize.STRING,
-        estado: Sequelize.STRING,
-        cidade: Sequelize.STRING,
-        numero: Sequelize.INTEGER,
-        cnpj: Sequelize.STRING,
-        bairro: Sequelize.STRING,
-        rua: Sequelize.STRING,
+        nome: DataTypes.STRING,
+        cep: DataTypes.STRING,
+        estado: DataTypes.STRING,
+        cidade: DataTypes.STRING,
+        numero: DataTypes.INTEGER,
+        cnpj: DataTypes.STRING,
+        bairro: DataTypes.STRING,
+        rua: DataTypes.STRING,
       },
       {
         sequelize,
