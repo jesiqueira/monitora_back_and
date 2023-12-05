@@ -25,7 +25,6 @@ Como Dev dependência para ajudar no desenvolvimento irei usar as seguintes tecn
 ## Criar uma migration
 
 - yarn sequelize migration:create --name=create-localSites
-
 ## Executar a migrate
 
 - yarn sequelize db:migrate
