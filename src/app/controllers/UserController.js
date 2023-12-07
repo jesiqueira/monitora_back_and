@@ -11,7 +11,7 @@ class UserController {
     const page = req.query.page || 1
     const limit = req.query.limit || 25
 
-    let where = {} //localsite_id: req.params.siteId
+    let where = {} //localsites_id: req.params.siteId
     let order = []
 
     if (login) {
@@ -74,7 +74,7 @@ class UserController {
 
     try {
       const data = await User.findAll({
-        attributes: { exclude: ['senha', 'senha_virtual', 'localsiteId', 'localsite_id'] },
+        attributes: { exclude: ['senha', 'senha_virtual', 'localsiteId', 'localsites_id'] },
         where,
         include: [
           {
@@ -103,7 +103,7 @@ class UserController {
         id: req.params.id,
       },
       include: [Localsite],
-      attributes: { exclude: ['senha', 'localsiteId', 'localsite_id'] },
+      attributes: { exclude: ['senha', 'localsiteId', 'localsites_id'] },
     })
 
     if (user === null || !Object.keys(user).length) {
@@ -139,16 +139,22 @@ class UserController {
     }
 
     try {
-      const { id, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create({
-        localsite_id: req.params.siteId,
-        ...req.body,
-      })
-      return res.status(201).json({ id, login, is_admin, is_ativo, createdAt, updatedAt })
+      //{ id, login, is_admin, is_ativo, createdAt, updatedAt }
+      const user = await User.create(
+        {
+          localsites_id: req.params.siteId,
+          ...req.body,
+        },
+        {
+          returning: ['id', 'login', 'is_admin', 'is_ativo', 'created_at', 'updated_at'],
+        }
+      )
+      return res.status(201).json(user)
     } catch (error) {
       if (error instanceof UniqueConstraintError) {
         return res.status(400).json({ error: 'O login fornecido já existe. Escolha um login diferente.' })
       }
-      console.error(error)
+      console.error(error.message)
       res.status(500).json({ error: 'Erro ao criar Usuário' })
     }
   }
