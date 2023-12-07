@@ -3,16 +3,25 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('descartes', {
+    await queryInterface.createTable('monitoramentos', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      data: {
-        type: Sequelize.DATE,
+      monitorar: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
+      },
+      data_ultimo_reporte_ok: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
+      horário_para_monitorar: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -22,17 +31,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      equipamentos_id: {
-        type: Sequelize.INTEGER,
-        references: { model: 'equipamentos', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-        allowNull: false,
-      },
     })
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('descartes')
+    await queryInterface.dropTable('monitoramentos')
   },
 }

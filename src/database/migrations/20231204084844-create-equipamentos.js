@@ -54,7 +54,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      localsite_id: {
+      localsites_id: {
         type: Sequelize.INTEGER,
         references: { model: 'localsites', key: 'id' },
         onUpdate: 'CASCADE',
@@ -65,19 +65,13 @@ module.exports = {
   },
 
   down(queryInterface) {
-    return queryInterface.sequelize.transaction(async (transaction) => {
-      // Utiliza uma transação para garantir consistência
-      const transacao = await queryInterface.sequelize.transaction()
-
+    return queryInterface.sequelize.transaction(async (transacao) => {
       try {
         // Remove a tabela
         await queryInterface.dropTable('equipamentos', { transacao })
 
         // Remove o tipo ENUM
         await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_equipamentos_categorias;', { transacao })
-
-        // Confirma a transação
-        await transacao.commit()
       } catch (error) {
         // Reverte a transação em caso de erro
         await transacao.rollback()
