@@ -32,7 +32,7 @@ class User extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Localsite, { foreignKey: 'localsite_id' })
+    this.belongsTo(models.Localsite, { foreignKey: 'localsites_id' })
   }
 }
 

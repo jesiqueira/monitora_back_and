@@ -3,31 +3,16 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('descartes', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      login: {
-        type: Sequelize.STRING,
+      data: {
+        type: Sequelize.DATE,
         allowNull: false,
-        unique: true,
-      },
-      senha: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      is_admin: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      },
-      is_ativo: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -37,9 +22,9 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      localsites_id: {
+      equipamentos_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'localsites', key: 'id' },
+        references: { model: 'equipamentos', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
@@ -48,6 +33,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('users')
+    await queryInterface.dropTable('descartes')
   },
 }
