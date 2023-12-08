@@ -11,11 +11,11 @@ module.exports = {
         allowNull: false,
       },
       acao: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       campos_modificados: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       login: {

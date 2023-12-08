@@ -1,6 +1,6 @@
 Localsites(id, nome, cep, estado, cidade, numero, cnpj, bairro, rua)
 Users ( id, login, senha, is_admin, is_ativo, localsites_id )
-Transferencias(id, data)
+Transferencias(id, data, status) -->status = ENUM(APROVADO, PENDENTE, CANCELADA, NEGADA)
 Equipamentos(id, posicao, categoria, modelo, fabricante, patrimônio, serial, data_final_garantia, data_nf, localsites_id) --->> categoria é ENUM(DESKTOP/NOTEBOOK/MONITOR)
 Descartes(id, data, equipamento_id)
 Logs(id, data, acao, campos_modificados, login)
