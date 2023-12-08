@@ -1,4 +1,4 @@
-import { Op, UniqueConstraintError } from 'sequelize'
+import { Op, Sequelize, UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize'
 import { parseISO } from 'date-fns'
 import * as Yup from 'yup'
 import Localsite from '../models/Localsite'
@@ -139,8 +139,7 @@ class UserController {
     }
 
     try {
-      //{ id, login, is_admin, is_ativo, createdAt, updatedAt }
-      const user = await User.create(
+      const { id, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create(
         {
           localsites_id: req.params.siteId,
           ...req.body,
@@ -149,13 +148,18 @@ class UserController {
           returning: ['id', 'login', 'is_admin', 'is_ativo', 'created_at', 'updated_at'],
         }
       )
-      return res.status(201).json(user)
+      return res.status(201).json({ id, login, is_admin, is_ativo, createdAt, updatedAt })
     } catch (error) {
       if (error instanceof UniqueConstraintError) {
         return res.status(400).json({ error: 'O login fornecido já existe. Escolha um login diferente.' })
       }
-      console.error(error.message)
-      res.status(500).json({ error: 'Erro ao criar Usuário' })
+      if (error instanceof ForeignKeyConstraintError) {
+        // console.error('Verifique se Existe Local Site cadastrado!')
+        res.status(400).json({ error: 'Verifique se Existe Local Site cadastrado!' })
+      } else {
+        // console.error(error.message)
+        res.status(500).json({ error: 'Erro ao criar Usuário' })
+      }
     }
   }
   async update(req, res) {
