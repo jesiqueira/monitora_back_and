@@ -2,8 +2,9 @@ import Sequelize from 'sequelize'
 import config from '../config/database'
 import Localsite from '../app/models/Localsite'
 import User from '../app/models/User'
+import Colaborador from '../app/models/Colaborador'
 
-const models = [Localsite, User]
+const models = [Localsite, User, Colaborador]
 
 class Database {
   constructor() {
