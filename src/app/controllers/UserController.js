@@ -208,7 +208,7 @@ class UserController {
       return res.status(200).json({ id, nome, login, is_admin, is_ativo })
     } catch (error) {
       console.error(error)
-      res.status(500).json({ error: 'Erro ao atualizar LocalSite' })
+      res.status(500).json({ error: 'Erro ao atualizar Users' })
     }
   }
 }

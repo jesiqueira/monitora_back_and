@@ -278,7 +278,6 @@ class CollaboratorController {
     }
 
     try {
-      
       const colaborador = await Collaborator.create({
         localsite_id: req.params.siteId,
         ...req.body,
@@ -289,7 +288,7 @@ class CollaboratorController {
       if (error instanceof UniqueConstraintError) {
         // console.error(Object.keys(error.fields))
         //Verifica se tem restrição de valor unico e retorna qual o campo está sendo violado ou já cadastrado
-        return res.status(400).json({ error: `${ Object.keys(error.fields).length > 0 ?  Object.keys(error.fields) : null }, já está cadastrado.` })
+        return res.status(400).json({ error: `${Object.keys(error.fields).length > 0 ? Object.keys(error.fields) : null}, já está cadastrado.` })
       }
       if (error instanceof ForeignKeyConstraintError) {
         // console.error('Verifique se Existe Local Site cadastrado!')
@@ -300,7 +299,58 @@ class CollaboratorController {
       }
     }
   }
-  async update(req, res) {}
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      nome: Yup.string(),
+      login: Yup.string(),
+      telefone: Yup.string(),
+      rg: Yup.string(),
+      cpf: Yup.string(),
+      cep: Yup.string(),
+      cidade: Yup.string(),
+      estado: Yup.string(),
+      endereco: Yup.string(),
+      bairro: Yup.string(),
+      numero: Yup.string(),
+      relacao: Yup.string(),
+      setor: Yup.string(),
+      gestor: Yup.string(),
+      is_ativo: Yup.boolean(),
+    })
+
+    try {
+      await schema.validate(req.body, { abortEarly: false })
+    } catch (error) {
+      console.error(error)
+      if (Object.entries(error.errors).length === 1) {
+        return res.status(422).json({ Error: error.message })
+      } else if (Object.entries(error.errors).length >= 2) {
+        let campos = []
+        error.inner.forEach((element) => {
+          campos.push(element.path)
+        })
+        return res.status(422).json({
+          Error: campos.reduce((objeto, campo) => {
+            objeto[campo] = campo
+            return objeto
+          }, {}),
+        })
+      }
+    }
+
+    const colaborador = await Collaborator.findByPk(req.params.id)
+
+    if (colaborador === null || !Object.keys(colaborador).length) {
+      return res.status(404).json({ error: 'Colaborador não localizado.' })
+    }
+    try {
+      const data  = await colaborador.update(req.body)
+      return res.status(200).json({ data })
+    } catch (error) {
+      console.error(error)
+      res.status(500).json({ error: 'Erro ao atualizar Colaborador' })
+    }
+  }
 }
 
 export default new CollaboratorController()
