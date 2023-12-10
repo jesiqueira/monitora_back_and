@@ -11,7 +11,7 @@ class UserController {
     const page = req.query.page || 1
     const limit = req.query.limit || 25
 
-    let where = {} //localsites_id: req.params.siteId
+    let where = {} //localsite_id: req.params.siteId
     let order = []
 
     if (nome) {
@@ -82,7 +82,7 @@ class UserController {
 
     try {
       const data = await User.findAll({
-        attributes: { exclude: ['senha', 'senha_virtual', 'localsiteId', 'localsites_id'] },
+        attributes: { exclude: ['senha', 'senha_virtual', 'localsiteId', 'localsite_id'] },
         where,
         include: [
           {
@@ -111,7 +111,7 @@ class UserController {
         id: req.params.id,
       },
       include: [Localsite],
-      attributes: { exclude: ['senha', 'localsiteId', 'localsites_id'] },
+      attributes: { exclude: ['senha', 'localsiteId', 'localsite_id'] },
     })
 
     if (user === null || !Object.keys(user).length) {
@@ -150,7 +150,7 @@ class UserController {
     try {
       const { id, nome, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create(
         {
-          localsites_id: req.params.siteId,
+          localsite_id: req.params.siteId,
           ...req.body,
         },
         {

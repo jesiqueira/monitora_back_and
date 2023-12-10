@@ -4,17 +4,17 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      await queryInterface.createTable('equipamentotransferencias', {
-        equipamento_id: {
+      await queryInterface.createTable('loginfoequipments', {
+        infoequipment_id: {
           type: Sequelize.INTEGER,
-          references: { model: 'equipamentos', key: 'id' },
+          references: { model: 'infoequipments', key: 'id' },
           allowNull: false,
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
-        transferencia_id: {
+        log_id: {
           type: Sequelize.INTEGER,
-          references: { model: 'transferencias', key: 'id' },
+          references: { model: 'logs', key: 'id' },
           allowNull: false,
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
@@ -28,19 +28,18 @@ module.exports = {
           allowNull: false,
         },
       })
-      await queryInterface.addConstraint('equipamentotransferencias', {
-        fields: ['equipamento_id', 'transferencia_id'],
+      await queryInterface.addConstraint('loginfoequipments', {
+        fields: ['infoequipment_id', 'log_id'],
         type: 'primary key',
-        name: 'equipamentotransferencias_pk',
+        name: 'loginfoequipment_pk',
       })
-      // console.error('Tabela criada com sucesso:')
     } catch (error) {
-      // console.error('Erro ao criar a tabela userdescates:', error.message)
+      // console.error('Erro ao criar a tabela:', error.message)
       throw error
     }
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('equipamentotransferencias')
+    await queryInterface.dropTable('loginfoequipments')
   },
 }

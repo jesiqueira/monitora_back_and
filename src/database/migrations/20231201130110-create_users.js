@@ -42,7 +42,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      localsites_id: {
+      localsite_id: {
         type: Sequelize.INTEGER,
         references: { model: 'localsites', key: 'id' },
         onUpdate: 'CASCADE',

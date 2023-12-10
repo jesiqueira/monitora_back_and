@@ -1,10 +1,10 @@
 import { Op } from 'sequelize'
 import { parseISO } from 'date-fns'
 import * as Yup from 'yup'
-import Colaborador from '../models/Colaborador'
+import Collaborator from '../models/Collaborator'
 import Localsite from '../models/Localsite'
 
-class ColaboradorController {
+class CollaboratorController {
   async index(req, res) {
     const {
       login,
@@ -32,7 +32,7 @@ class ColaboradorController {
     const page = req.query.page || 1
     const limit = req.query.limit || 25
 
-    let where = {} //localsites_id: req.params.siteId
+    let where = {} //localsite_id: req.params.siteId
     let order = []
 
     if (login) {
@@ -198,7 +198,7 @@ class ColaboradorController {
     //   },
     // ],
     try {
-      const data = await Colaborador.findAll({
+      const data = await Collaborator.findAll({
         where,
         order,
         limit,
@@ -206,12 +206,12 @@ class ColaboradorController {
       })
       console.log('Colaboradores: ', data)
       if (!Object.keys(data).length) {
-        return res.status(404).json({ error: 'Não existe colaboradores cadastrados!' })
+        return res.status(404).json({ error: 'Não existe Colaborador cadastrados!' })
       }
       return res.status(200).json(data)
     } catch (error) {
       // if (error ) {
-      //   return res.status(400).json({ Error: 'Erro ao criar colaborador!' })
+      //   return res.status(400).json({ Error: 'Erro ao criar Collaborator!' })
       // }
       console.error(error)
       return res.status(500).json({ Error: error.message })
@@ -222,4 +222,4 @@ class ColaboradorController {
   async update(req, res) {}
 }
 
-export default new ColaboradorController()
+export default new CollaboratorController()

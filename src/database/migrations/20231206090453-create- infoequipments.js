@@ -3,9 +3,9 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.sequelize.query("CREATE TYPE enum_info_equipamentos_status as ENUM('ESTOQUE', 'EM USO')")
+    await queryInterface.sequelize.query("CREATE TYPE enum_info_equipments_status as ENUM('ESTOQUE', 'EM USO')")
 
-    await queryInterface.createTable('infoequipamentos', {
+    await queryInterface.createTable('infoequipments', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -17,7 +17,7 @@ module.exports = {
         allowNull: true,
       },
       status: {
-        type: 'enum_info_equipamentos_status',
+        type: 'enum_info_equipments_status',
         allowNull: false,
         defaultValue: 'ESTOQUE',
       },
@@ -57,23 +57,23 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      equipamentos_id: {
+      equipment_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'equipamentos', key: 'id' },
+        references: { model: 'equipments', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
       },
-      colaboradores_id: {
+      collaborator_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'colaboradores', key: 'id' },
+        references: { model: 'collaborators', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
       },
-      monitoramentos_id: {
+      monitoring_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'monitoramentos', key: 'id' },
+        references: { model: 'monitorings', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         allowNull: false,
@@ -85,10 +85,10 @@ module.exports = {
     return queryInterface.sequelize.transaction(async (transacao) => {
       try {
         // Remove a tabela
-        await queryInterface.dropTable('infoequipamentos', { transacao })
+        await queryInterface.dropTable('infoequipments', { transacao })
 
         // Remove o tipo ENUM
-        await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_info_equipamentos_status;', { transacao })
+        await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_info_equipments_status;', { transacao })
       } catch (error) {
         // Reverte a transação em caso de erro
         await transacao.rollback()

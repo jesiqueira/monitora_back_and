@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('colaboradores', {
+    await queryInterface.createTable('collaborators', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -83,7 +83,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      localsites_id: {
+      localsite_id: {
         type: Sequelize.INTEGER,
         references: { model: 'localsites', key: 'id' },
         onUpdate: 'CASCADE',
@@ -94,6 +94,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('colaboradores')
+    await queryInterface.dropTable('collaborators')
   },
 }

@@ -1,16 +1,16 @@
 import { Router } from 'express'
-import localSites from './app/controllers/LocalSiteController'
+import localsite from './app/controllers/LocalSiteController'
 import users from './app/controllers/UserController'
-import colaborador from './app/controllers/ColaboradorController'
+import colaborador from './app/controllers/CollaboratorController'
 
 const routes = new Router()
 
-// LocalSites
-routes.get('/site', localSites.index)
-routes.get('/site/:id', localSites.show)
-routes.post('/site', localSites.create)
-routes.put('/site/:id', localSites.update)
-routes.delete('/site/:id', localSites.destroy)
+// localsite
+routes.get('/site', localsite.index)
+routes.get('/site/:id', localsite.show)
+routes.post('/site', localsite.create)
+routes.put('/site/:id', localsite.update)
+routes.delete('/site/:id', localsite.destroy)
 
 // Users
 routes.get('/users', users.index)
@@ -18,7 +18,7 @@ routes.get('/users/:id', users.show)
 routes.post('/site/:siteId/users', users.create)
 routes.put('/users/:id', users.update)
 
-//Colaboradores
+//collaborators
 routes.get('/colaborador', colaborador.index)
 
 export default routes

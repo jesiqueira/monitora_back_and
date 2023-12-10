@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('monitoramentos', {
+    await queryInterface.createTable('monitorings', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
-      horário_para_monitorar: {
+      horario_para_monitorar: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
@@ -35,6 +35,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('monitoramentos')
+    await queryInterface.dropTable('monitorings')
   },
 }

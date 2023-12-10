@@ -5,9 +5,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     try {
       //criar o tipo ENUM
-      await queryInterface.sequelize.query("CREATE TYPE enum_transferencia_status as ENUM('APROVADO', 'PENDENTE', 'CANCELADA', 'NEGADA');")
+      await queryInterface.sequelize.query("CREATE TYPE enum_trasnfer_status as ENUM('APROVADO', 'PENDENTE', 'CANCELADA', 'NEGADA');")
 
-      await queryInterface.createTable('transferencias', {
+      await queryInterface.createTable('transfers', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -19,7 +19,7 @@ module.exports = {
           allowNull: false,
         },
         status: {
-          type: 'enum_transferencia_status',
+          type: 'enum_trasnfer_status',
           allowNull: false,
         },
         created_at: {
@@ -40,8 +40,8 @@ module.exports = {
   down(queryInterface) {
     return queryInterface.sequelize.transaction(async (transacao) => {
       try {
-        await queryInterface.dropTable('transferencias', { transacao })
-        await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_transferencia_status;', { transacao })
+        await queryInterface.dropTable('transfers', { transacao })
+        await queryInterface.sequelize.query('DROP TYPE IF EXISTS enum_trasnfer_status;', { transacao })
       } catch (error) {
         // Reverte a transação em caso de erro
         await transacao.rollback()

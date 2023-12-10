@@ -25,7 +25,7 @@ class Localsite extends Model {
   }
   static associate(models) {
     this.hasMany(models.User)
-    this.hasMany(models.Colaborador)
+    this.hasMany(models.Collaborator)
   }
 }
 

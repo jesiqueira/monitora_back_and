@@ -4,10 +4,10 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      await queryInterface.createTable('loginfoequipamentos', {
-        infoequipamento_id: {
+      await queryInterface.createTable('logequipments', {
+        equipment_id: {
           type: Sequelize.INTEGER,
-          references: { model: 'infoequipamentos', key: 'id' },
+          references: { model: 'equipments', key: 'id' },
           allowNull: false,
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
@@ -28,18 +28,18 @@ module.exports = {
           allowNull: false,
         },
       })
-      await queryInterface.addConstraint('loginfoequipamentos', {
-        fields: ['infoequipamento_id', 'log_id'],
+      await queryInterface.addConstraint('logequipments', {
+        fields: ['equipment_id', 'log_id'],
         type: 'primary key',
-        name: 'loginfoequipamentos_pk',
+        name: 'logequipment_pk',
       })
     } catch (error) {
-       // console.error('Erro ao criar a tabela:', error.message)
-       throw error
+      // console.error('Erro ao criar a tabela:', error.message)
+      throw error
     }
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('loginfoequipamentos')
+    await queryInterface.dropTable('logequipments')
   },
 }

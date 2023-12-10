@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      await queryInterface.createTable('usertransferencias', {
+      await queryInterface.createTable('userdiscards', {
         user_id: {
           type: Sequelize.INTEGER,
           references: { model: 'users', key: 'id' },
@@ -12,9 +12,9 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
-        transferencia_id: {
+        discard_id: {
           type: Sequelize.INTEGER,
-          references: { model: 'transferencias', key: 'id' },
+          references: { model: 'discards', key: 'id' },
           allowNull: false,
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
@@ -28,19 +28,19 @@ module.exports = {
           allowNull: false,
         },
       })
-      await queryInterface.addConstraint('usertransferencias', {
-        fields: ['user_id', 'transferencia_id'],
+      await queryInterface.addConstraint('userdiscards', {
+        fields: ['user_id', 'discard_id'],
         type: 'primary key',
-        name: 'usertransferencias_pk',
+        name: 'userdiscard_pk',
       })
-      // console.log('Tabela criada com sucesso!')
+      // console.log('Tabela userdescates criada com sucesso!')
     } catch (error) {
-      // console.error('Erro ao criar a tabela:', error.message)
+      // console.error('Erro ao criar a tabela userdescates:', error.message)
       throw error
     }
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('usertransferencias')
+    await queryInterface.dropTable('userdiscards')
   },
 }
