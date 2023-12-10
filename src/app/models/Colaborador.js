@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize'
 
 class Colaborador extends Model {
   static init(sequelize) {
@@ -28,12 +28,12 @@ class Colaborador extends Model {
           plural: 'colaboradores',
         },
       }
-    );
+    )
   }
 
   static associate(models) {
-    this.belongsTo(models.Localsite, { foreignKey: 'localsites_id' });
+    this.belongsTo(models.Localsite, { foreignKey: 'localsites_id' })
   }
 }
 
-export default Colaborador;
+export default Colaborador

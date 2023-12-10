@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import localSites from './app/controllers/LocalSiteController'
 import users from './app/controllers/UserController'
+import colaborador from './app/controllers/ColaboradorController'
 
 const routes = new Router()
 
@@ -16,5 +17,8 @@ routes.get('/users', users.index)
 routes.get('/users/:id', users.show)
 routes.post('/site/:siteId/users', users.create)
 routes.put('/users/:id', users.update)
+
+//Colaboradores
+routes.get('/colaborador', colaborador.index)
 
 export default routes

@@ -1,4 +1,4 @@
-import { Op, Sequelize, UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize'
+import { Op, UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize'
 import { parseISO } from 'date-fns'
 import * as Yup from 'yup'
 import Localsite from '../models/Localsite'
@@ -6,7 +6,7 @@ import User from '../models/User'
 
 class UserController {
   async index(req, res) {
-    const { login, is_admin, is_ativo, createdBefore, createdAfter, updatedBefore, updatedAfter, sort } = req.query
+    const { nome, login, createdBefore, createdAfter, updatedBefore, updatedAfter, sort } = req.query
 
     const page = req.query.page || 1
     const limit = req.query.limit || 25
@@ -14,6 +14,14 @@ class UserController {
     let where = {} //localsites_id: req.params.siteId
     let order = []
 
+    if (nome) {
+      where = {
+        ...where,
+        nome: {
+          [Op.iLike]: nome,
+        },
+      }
+    }
     if (login) {
       where = {
         ...where,
@@ -114,6 +122,7 @@ class UserController {
   }
   async create(req, res) {
     const schema = Yup.object().shape({
+      nome: Yup.string().lowercase().required('Nome é requerido.'),
       login: Yup.string().lowercase().required('Login é requerido.'),
       senha_virtual: Yup.string().required('Senha é requerida').min(8, 'minimo 8 caracteres'),
     })
@@ -121,7 +130,7 @@ class UserController {
     try {
       await schema.validate(req.body, { abortEarly: false })
     } catch (error) {
-      console.log('Errros aconteceram: ', error.errors)
+      // console.log('Errros aconteceram: ', error.errors)
       if (Object.entries(error.errors).length === 1) {
         return res.status(422).json({ Error: error.message })
       } else if (Object.entries(error.errors).length >= 2) {
@@ -139,16 +148,16 @@ class UserController {
     }
 
     try {
-      const { id, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create(
+      const { id, nome, login, is_admin, is_ativo, createdAt, updatedAt } = await User.create(
         {
           localsites_id: req.params.siteId,
           ...req.body,
         },
         {
-          returning: ['id', 'login', 'is_admin', 'is_ativo', 'created_at', 'updated_at'],
+          returning: ['id', 'nome', 'login', 'is_admin', 'is_ativo', 'created_at', 'updated_at'],
         }
       )
-      return res.status(201).json({ id, login, is_admin, is_ativo, createdAt, updatedAt })
+      return res.status(201).json({ id, nome, login, is_admin, is_ativo, createdAt, updatedAt })
     } catch (error) {
       if (error instanceof UniqueConstraintError) {
         return res.status(400).json({ error: 'O login fornecido já existe. Escolha um login diferente.' })
@@ -164,6 +173,7 @@ class UserController {
   }
   async update(req, res) {
     const schema = Yup.object().shape({
+      nome: Yup.string().lowercase(),
       login: Yup.string().lowercase(),
       senha_virtual: Yup.string(),
     })
@@ -194,8 +204,8 @@ class UserController {
       return res.status(404).json({ error: 'Usuário não localizado.' })
     }
     try {
-      const { id, login, is_admin, is_ativo } = await user.update(req.body)
-      return res.status(200).json({ id, login, is_admin, is_ativo })
+      const { id, nome, login, is_admin, is_ativo } = await user.update(req.body)
+      return res.status(200).json({ id, nome, login, is_admin, is_ativo })
     } catch (error) {
       console.error(error)
       res.status(500).json({ error: 'Erro ao atualizar LocalSite' })
