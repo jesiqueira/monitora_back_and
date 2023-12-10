@@ -190,16 +190,16 @@ class CollaboratorController {
       order = sort.split(',').map((item) => item.split(':'))
     }
 
-    // include: [
-    //   {
-    //     model: Localsite,
-    //     attributes: ['id', 'nome', 'cidade'],
-    //     // required: true,
-    //   },
-    // ],
     try {
       const data = await Collaborator.findAll({
         where,
+        include: [
+          {
+            model: Localsite,
+            attributes: ['id', 'nome', 'cidade'],
+            required: true,
+          },
+        ],
         order,
         limit,
         offset: limit * page - limit,
