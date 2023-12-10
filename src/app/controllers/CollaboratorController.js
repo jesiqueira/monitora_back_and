@@ -1,4 +1,4 @@
-import { Op } from 'sequelize'
+import { Op, UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize'
 import { parseISO } from 'date-fns'
 import * as Yup from 'yup'
 import Collaborator from '../models/Collaborator'
@@ -193,6 +193,7 @@ class CollaboratorController {
     try {
       const data = await Collaborator.findAll({
         where,
+        attributes: { exclude: ['localsiteId', 'localsite_id'] },
         include: [
           {
             model: Localsite,
@@ -204,7 +205,7 @@ class CollaboratorController {
         limit,
         offset: limit * page - limit,
       })
-      console.log('Colaboradores: ', data)
+      // console.log('Colaboradores: ', data)
       if (!Object.keys(data).length) {
         return res.status(404).json({ error: 'Não existe Colaborador cadastrados!' })
       }
@@ -217,8 +218,88 @@ class CollaboratorController {
       return res.status(500).json({ Error: error.message })
     }
   }
-  async show(req, res) {}
-  async create(req, res) {}
+  async show(req, res) {
+    const data = await Collaborator.findOne({
+      where: {
+        id: req.params.id,
+      },
+      attributes: { exclude: ['localsiteId', 'localsite_id'] },
+      include: [
+        {
+          model: Localsite,
+          attributes: ['id', 'nome', 'cidade'],
+        },
+      ],
+    })
+
+    if (data === null || !Object.keys(data).length) {
+      return res.status(404).json({ error: 'Não existe colaborador cadastrado.' })
+    }
+
+    return res.status(200).json(data)
+  }
+  async create(req, res) {
+    const schema = Yup.object().shape({
+      nome: Yup.string().required('Nome é requerido'),
+      login: Yup.string().required('Login é requerido'),
+      telefone: Yup.string().required('Telefone é requerido'),
+      rg: Yup.string().required('RG é requerido'),
+      cpf: Yup.string().required('CPF é requerido'),
+      cep: Yup.string().required('CEP é requerido'),
+      cidade: Yup.string().required('Cidade é requerido'),
+      estado: Yup.string().required('Estado é requerido'),
+      endereco: Yup.string().required('Endereco é requerido'),
+      bairro: Yup.string().required('Bairro é requerido'),
+      numero: Yup.string().required('Número é requerido'),
+      relacao: Yup.string().required('Relação é requerido'),
+      setor: Yup.string().required('Setor é requerido'),
+      gestor: Yup.string().required('Gestor é requerido'),
+      is_ativo: Yup.boolean(),
+    })
+
+    try {
+      await schema.validate(req.body, { abortEarly: false })
+    } catch (error) {
+      console.error(error)
+      if (Object.entries(error.errors).length === 1) {
+        return res.status(422).json({ Error: error.message })
+      } else if (Object.entries(error.errors).length >= 2) {
+        let campos = []
+        error.inner.forEach((element) => {
+          campos.push(element.path)
+        })
+        return res.status(422).json({
+          Error: campos.reduce((objeto, campo) => {
+            objeto[campo] = campo
+            return objeto
+          }, {}),
+        })
+      }
+    }
+
+    try {
+      
+      const colaborador = await Collaborator.create({
+        localsite_id: req.params.siteId,
+        ...req.body,
+      })
+      return res.status(201).json({ colaborador })
+    } catch (error) {
+      console.error(error)
+      if (error instanceof UniqueConstraintError) {
+        // console.error(Object.keys(error.fields))
+        //Verifica se tem restrição de valor unico e retorna qual o campo está sendo violado ou já cadastrado
+        return res.status(400).json({ error: `${ Object.keys(error.fields).length > 0 ?  Object.keys(error.fields) : null }, já está cadastrado.` })
+      }
+      if (error instanceof ForeignKeyConstraintError) {
+        // console.error('Verifique se Existe Local Site cadastrado!')
+        res.status(400).json({ error: 'Verifique se Existe Local Site cadastrado!' })
+      } else {
+        // console.error(error.message)
+        res.status(500).json({ error: 'Erro ao criar Usuário' })
+      }
+    }
+  }
   async update(req, res) {}
 }
 
