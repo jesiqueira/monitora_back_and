@@ -3,11 +3,15 @@ import localsite from './app/controllers/LocalSiteController'
 import users from './app/controllers/UserController'
 import colaborador from './app/controllers/CollaboratorController'
 import session from './app/controllers/SessionController'
+import autenticacao from './app/middlewares/autenticacao'
 
 const routes = new Router()
 
 // Sessions
 routes.post('/session', session.create)
+
+// Controla o acesso a partir desse ponto
+routes.use(autenticacao)
 
 // localsite
 routes.get('/site', localsite.index)
