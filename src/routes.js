@@ -9,6 +9,7 @@ const routes = new Router()
 
 // Sessions
 routes.post('/session', session.create)
+routes.post('/validaToken', session.validaToken)
 
 // Controla o acesso a partir desse ponto
 routes.use(autenticacao)

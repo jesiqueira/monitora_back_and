@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { promisify } from 'util'
 import User from '../models/User'
 
 class SessionController {
@@ -30,6 +31,23 @@ class SessionController {
       })
     } catch (error) {
       return res.status(401).json({ Error: error.message })
+    }
+  }
+
+  async validaToken(req, res) {
+    try {
+      const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
+
+      if (!token) {
+        return res.status(401).json({ valido: false, error: 'Token não fornecido' })
+      }
+
+      await promisify(jwt.verify)(token, process.env.APP_SECRET)
+
+      return res.status(200).json({ valido: true, message: 'Token válido' })
+    } catch (error) {
+      // console.error('Erro ao validar token:', error.message)
+      return res.status(401).json({ valido: false, error: 'Token inválido' })
     }
   }
 }
