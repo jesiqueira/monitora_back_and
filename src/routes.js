@@ -2,8 +2,12 @@ import { Router } from 'express'
 import localsite from './app/controllers/LocalSiteController'
 import users from './app/controllers/UserController'
 import colaborador from './app/controllers/CollaboratorController'
+import session from './app/controllers/SessionController'
 
 const routes = new Router()
+
+// Sessions
+routes.post('/session', session.create)
 
 // localsite
 routes.get('/site', localsite.index)
