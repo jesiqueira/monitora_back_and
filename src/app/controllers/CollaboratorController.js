@@ -193,7 +193,7 @@ class CollaboratorController {
     try {
       const data = await Collaborator.findAll({
         where,
-        attributes: { exclude: ['localsiteId', 'localsite_id'] },
+        attributes: { exclude: ['id', 'localsiteId', 'localsite_id', 'createdAt', 'updatedAt', 'rg', 'cpf', 'bairro', 'cep'] },
         include: [
           {
             model: Localsite,
@@ -344,7 +344,7 @@ class CollaboratorController {
       return res.status(404).json({ error: 'Colaborador não localizado.' })
     }
     try {
-      const data  = await colaborador.update(req.body)
+      const data = await colaborador.update(req.body)
       return res.status(200).json({ data })
     } catch (error) {
       console.error(error)
