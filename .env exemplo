@@ -8,5 +8,6 @@ EXPIRA_EM=7d
 # Database
 
 DB_HOST=Local_onde_esta_o_banco
+DB_NAME=nome_data_base
 DB_USER=user_do_banco_de_dado
 DB_PASSWORD=senha_do_banco_de_dados
