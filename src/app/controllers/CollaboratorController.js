@@ -351,6 +351,15 @@ class CollaboratorController {
       res.status(500).json({ error: 'Erro ao atualizar Colaborador' })
     }
   }
+
+  async total(req, res) {
+    try {
+      const total = await Collaborator.count()
+      res.status(200).json({ total: total })
+    } catch (error) {
+      return res.status(404).json({ error: 'Não existe Colaborador Cadastrado.' })
+    }
+  }
 }
 
 export default new CollaboratorController()
