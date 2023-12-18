@@ -191,6 +191,8 @@ class CollaboratorController {
     }
 
     try {
+      const totalCount = await Collaborator.count()
+
       const data = await Collaborator.findAll({
         where,
         attributes: { exclude: ['id', 'localsiteId', 'localsite_id', 'createdAt', 'updatedAt', 'rg', 'cpf', 'bairro', 'cep'] },
@@ -209,6 +211,11 @@ class CollaboratorController {
       if (!Object.keys(data).length) {
         return res.status(404).json({ error: 'Não existe Colaborador cadastrados!' })
       }
+
+      // Configuração do cabeçalho com o total de colaboradores
+      res.header('Access-Control-Expose-Headers', 'TotalCount')
+      res.set('TotalCount', totalCount)
+
       return res.status(200).json(data)
     } catch (error) {
       // if (error ) {
@@ -349,15 +356,6 @@ class CollaboratorController {
     } catch (error) {
       console.error(error)
       res.status(500).json({ error: 'Erro ao atualizar Colaborador' })
-    }
-  }
-
-  async total(req, res) {
-    try {
-      const total = await Collaborator.count()
-      res.status(200).json({ total: total })
-    } catch (error) {
-      return res.status(404).json({ error: 'Não existe Colaborador Cadastrado.' })
     }
   }
 }
