@@ -207,21 +207,23 @@ class CollaboratorController {
         limit,
         offset: limit * page - limit,
       })
-      // console.log('Colaboradores: ', data)
-      if (!Object.keys(data).length) {
-        return res.status(404).json({ error: 'Não existe Colaborador cadastrados!' })
-      }
 
       // Configuração do cabeçalho com o total de colaboradores
       res.header('Access-Control-Expose-Headers', 'TotalCount')
-      res.set('TotalCount', totalCount)
 
+      const totalColaboradores = data.length === 25 ? totalCount : data.length
+      if (!Object.keys(data).length) {
+        res.set('TotalCount', totalColaboradores)
+        return res.status(404).json({ error: 'Não existe Colaborador cadastrados!' })
+      }
+
+      res.set('TotalCount', totalColaboradores)
       return res.status(200).json(data)
     } catch (error) {
       // if (error ) {
       //   return res.status(400).json({ Error: 'Erro ao criar Collaborator!' })
       // }
-      console.error(error)
+      // console.error(error)
       return res.status(500).json({ Error: error.message })
     }
   }
