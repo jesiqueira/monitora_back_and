@@ -211,7 +211,7 @@ class CollaboratorController {
       // Configuração do cabeçalho com o total de colaboradores
       res.header('Access-Control-Expose-Headers', 'TotalCount')
 
-      const totalColaboradores = data.length === 25 ? totalCount : data.length
+      const totalColaboradores = data.length === limit ? totalCount : data.length
       if (!Object.keys(data).length) {
         res.set('TotalCount', totalColaboradores)
         return res.status(404).json({ error: 'Não existe Colaborador cadastrados!' })
