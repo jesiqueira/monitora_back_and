@@ -325,6 +325,7 @@ class CollaboratorController {
       setor: Yup.string(),
       gestor: Yup.string(),
       is_ativo: Yup.boolean(),
+      localsite_id: Yup.number(),
     })
 
     try {
