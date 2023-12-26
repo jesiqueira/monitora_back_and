@@ -29,7 +29,7 @@ routes.put('/users/:id', users.update)
 
 //collaborators
 routes.get('/colaborador', colaborador.index)
-routes.get('/colaborador/:id', colaborador.show)
+routes.get('/colaborador/:login', colaborador.show)
 routes.post('/colaborador/:siteId/colaborador', colaborador.create)
 routes.put('/colaborador/:id', colaborador.update)
 

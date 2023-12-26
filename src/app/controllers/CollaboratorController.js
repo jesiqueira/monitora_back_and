@@ -230,7 +230,7 @@ class CollaboratorController {
   async show(req, res) {
     const data = await Collaborator.findOne({
       where: {
-        id: req.params.id,
+        login: req.params.login,
       },
       attributes: { exclude: ['localsiteId', 'localsite_id'] },
       include: [
