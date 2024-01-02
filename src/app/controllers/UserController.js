@@ -81,6 +81,7 @@ class UserController {
     }
 
     try {
+      const totalCount = await User.count()
       const data = await User.findAll({
         attributes: { exclude: ['senha', 'senha_virtual', 'localsiteId', 'localsite_id'] },
         where,
@@ -95,9 +96,16 @@ class UserController {
         limit,
         offset: limit * page - limit,
       })
+
+      // Configuração do cabeçalho com o total de colaboradores
+      res.header('Access-Control-Expose-Headers', 'TotalUsers')
+      const totalUsers = data.length === limit ? totalCount : data.length
+
       if (!Object.keys(data).length) {
         return res.status(404).json({ error: 'Não existe usuários cadastrados!' })
       }
+
+      res.set('TotalUsers', totalUsers)
       return res.status(200).json(data)
     } catch (err) {
       console.log('Error: ', err)
